@@ -1,0 +1,116 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Nick",
+      "lastName": "Fury",
+      "email": "nick@dev.com",
+      "password": "Nick@123"
+    },
+    {
+      "id": 2,
+      "firstName": "Carline",
+      "lastName": "Regi",
+      "email": "cregi1@networkadvertising.org",
+      "password": "oI0.Lq@`O=nCM*61"
+    },
+    {
+      "id": 3,
+      "firstName": "Davide",
+      "lastName": "Urwin",
+      "email": "durwin2@biblegateway.com",
+      "password": "jJ8!5dN%"
+    },
+    {
+      "id": 4,
+      "firstName": "Oliy",
+      "lastName": "Kennington",
+      "email": "okennington3@wufoo.com",
+      "password": "rQ3$(r+s"
+    },
+    {
+      "id": 5,
+      "firstName": "Kyle",
+      "lastName": "Brazur",
+      "email": "kbrazur4@skype.com",
+      "password": "lF0(R~kmvtOF"
+    },
+    {
+      "id": 6,
+      "firstName": "Odetta",
+      "lastName": "Cammish",
+      "email": "ocammish5@ihg.com",
+      "password": "hJ3(Z{UT@%("
+    },
+    {
+      "id": 7,
+      "firstName": "Tiffy",
+      "lastName": "Brody",
+      "email": "tbrody6@slate.com",
+      "password": "fG2/N}+3I"
+    },
+    {
+      "id": 8,
+      "firstName": "Junina",
+      "lastName": "Garmey",
+      "email": "jgarmey7@tinyurl.com",
+      "password": "rA0@qZ`~tromv}{c"
+    },
+    {
+      "id": 9,
+      "firstName": "Ranee",
+      "lastName": "Shorto",
+      "email": "rshorto8@ca.gov",
+      "password": "iZ8!oYTB{\\2>J"
+    },
+    {
+      "id": 10,
+      "firstName": "Federico",
+      "lastName": "Hucquart",
+      "email": "fhucquart9@epa.gov",
+      "password": "yX7<o26aDMykR/"
+    },
+    {
+      "id": 11,
+      "firstName": "Federico",
+      "lastName": "Hucquart",
+      "email": "fhucquart9@epa.gov",
+      "password": "yX7<o26aDMykR/"
+    },
+    {
+      "firstName": "z",
+      "lastName": "z",
+      "email": "virtu@gmail.com",
+      "password": "12345678",
+      "id": 12
+    },
+    {
+      "firstName": "z",
+      "lastName": "z",
+      "email": "sa@gmail.com",
+      "password": "123123123",
+      "id": 13
+    },
+    {
+      "firstName": "z",
+      "lastName": "z",
+      "email": "virtu@gmail.com",
+      "password": "123123123",
+      "id": 14
+    },
+    {
+      "firstName": "z",
+      "lastName": "z",
+      "email": "sa1@gmail.com",
+      "password": "asdasdasd",
+      "id": 15
+    },
+    {
+      "firstName": "as",
+      "lastName": "as",
+      "email": "sa12@gmail.com",
+      "password": "asdasdasd",
+      "id": 16
+    }
+  ]
+}
