@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Footer, Navbar } from "../components";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -7,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import apiHelper from "../utilities/apiHelper.js";
+
 const Login = () => {
 	const {
 		register,
@@ -18,8 +18,10 @@ const Login = () => {
 		(async () => {
 			try {
 				const users = await apiHelper.get("http://localhost:3004/users");
-				const existedUser = users.find((item) => item.email == data.email);
-				if (Object.keys(existedUser).length == 0)
+				const existedUser = users.find(
+					(item) => item.email === data.email && item.password === data.password
+				);
+				if (!existedUser || Object.keys(existedUser).length == 0)
 					return toast("Wrong email or password", {
 						type: "error",
 					});
@@ -36,6 +38,7 @@ const Login = () => {
 				toast("Login successfully", { type: "success" });
 				navigate("/");
 			} catch (e) {
+				console.error(e);
 				toast("Something went wrong", { type: "error" });
 			}
 		})();
