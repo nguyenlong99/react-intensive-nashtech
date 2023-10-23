@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import apiHelper from "../utilities/apiHelper.js";
+import { UserService } from "../services";
 
 const Register = () => {
 	const {
@@ -24,13 +24,13 @@ const Register = () => {
 					email: data.email,
 					password: data.password,
 				};
-				const users = await apiHelper.get("http://localhost:3004/users");
-				const isEmailExisted = users.some((item) => item.email == data.email);
+				const users = await UserService.getUsers();
+				const isEmailExisted = users.some((item) => item.email === data.email);
 				if (isEmailExisted)
 					return toast("Email is existed. Please input new email!", {
 						type: "error",
 					});
-				await apiHelper.post("http://localhost:3004/users", body);
+				await UserService.createUser(body);
 				toast.dismiss();
 				toast("Register successfully", { type: "success" });
 				navigate("/login");
@@ -126,7 +126,7 @@ const Register = () => {
 											message: "Confirm Password must be 8 characters or more",
 										},
 										validate: (value) => {
-											if (watch("password") != value) {
+											if (watch("password") !== value) {
 												return "Confirm password does not match password";
 											}
 										},

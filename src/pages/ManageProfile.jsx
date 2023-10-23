@@ -25,7 +25,7 @@ const ManageProfile = () => {
 		const userByEmail = await UserService.getUserByEmail(loggedInUser?.email);
 		console.log({ loggedInUser, userByEmail });
 
-		if (!userByEmail || Object.keys(userByEmail).length == 0) {
+		if (!userByEmail || Object.keys(userByEmail).length === 0) {
 			navigate("/login");
 
 			return toast("User is not existed, please login again!", {
@@ -34,6 +34,7 @@ const ManageProfile = () => {
 		}
 		return userByEmail;
 	};
+
 	useEffect(() => {
 		(async () => {
 			const user = await checkValidUserLoggedIn();
@@ -128,7 +129,7 @@ const ManageProfile = () => {
 										},
 										validate: (value) => {
 											console.log({ value, user });
-											if (value != user?.password) {
+											if (value !== user?.password) {
 												return "Old Password is incorrect";
 											}
 										},
@@ -171,7 +172,7 @@ const ManageProfile = () => {
 											message: "Confirm Password must be 8 characters or more",
 										},
 										validate: (value) => {
-											if (watch("newPassword") != value) {
+											if (watch("newPassword") !== value) {
 												return "Confirm Password does not match New Password";
 											}
 										},

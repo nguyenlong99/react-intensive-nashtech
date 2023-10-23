@@ -1,11 +1,14 @@
 import { apiHelper } from "../utilities";
 
 const UserService = {
-	getUserByEmail: async (email) => {
+	getUsers: async () => {
 		const users = await apiHelper.get(
 			`${process.env.REACT_APP_SERVER_HOST}/users`
 		);
-		console.log({ users });
+		return users;
+	},
+	getUserByEmail: async (email) => {
+		const users = UserService.getUsers();
 		const userByEmail = users.find((item) => item.email === email);
 		return userByEmail;
 	},
@@ -20,6 +23,12 @@ const UserService = {
 			}
 		);
 		return updatedUser;
+	},
+	createUser: async (data) => {
+		return await apiHelper.post(
+			`${process.env.REACT_APP_SERVER_HOST}/users`,
+			data
+		);
 	},
 };
 

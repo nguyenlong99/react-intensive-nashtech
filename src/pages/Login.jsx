@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import apiHelper from "../utilities/apiHelper.js";
+import { UserService } from "../services";
 
 const Login = () => {
 	const {
@@ -17,11 +17,11 @@ const Login = () => {
 	const onSubmit = (data) => {
 		(async () => {
 			try {
-				const users = await apiHelper.get("http://localhost:3004/users");
+				const users = await UserService.getUsers();
 				const existedUser = users.find(
 					(item) => item.email === data.email && item.password === data.password
 				);
-				if (!existedUser || Object.keys(existedUser).length == 0)
+				if (!existedUser || Object.keys(existedUser).length === 0)
 					return toast("Wrong email or password", {
 						type: "error",
 					});
