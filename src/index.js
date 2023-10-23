@@ -18,6 +18,7 @@ import {
 	Register,
 	Checkout,
 	PageNotFound,
+	ManageProfile,
 } from "./pages";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -37,6 +38,7 @@ root.render(
 				<Route path="/checkout" element={<Checkout />} />
 				<Route path="*" element={<PageNotFound />} />
 				<Route path="/product/*" element={<PageNotFound />} />
+				<Route path="/manage-profile" element={<ManageProfile />} />
 			</Routes>
 		</Provider>
 		<ToastContainer autoClose={2500} />

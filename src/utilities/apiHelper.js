@@ -20,5 +20,16 @@ const apiHelper = {
 		});
 		return response.json();
 	},
+	put: async (url = "", data = {}) => {
+		const response = await fetch(url, {
+			method: "PUT",
+			mode: "cors",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		});
+		return response.json();
+	},
 };
 export default apiHelper;
