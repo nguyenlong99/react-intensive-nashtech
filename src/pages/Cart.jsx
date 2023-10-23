@@ -1,5 +1,4 @@
 import React from "react";
-import { Footer, Navbar } from "../components";
 import { useSelector, useDispatch } from "react-redux";
 import { addCart, delCart } from "../redux/action";
 import { Link, useNavigate } from "react-router-dom";
@@ -177,13 +176,11 @@ const Cart = () => {
 
 	return (
 		<>
-			<Navbar />
 			<div className="container my-3 py-3">
 				<h1 className="text-center">Cart</h1>
 				<hr />
 				{state.length > 0 ? <ShowCart /> : <EmptyCart />}
 			</div>
-			<Footer />
 		</>
 	);
 };

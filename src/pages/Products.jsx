@@ -1,12 +1,10 @@
 import React from "react";
-import { Footer, Navbar, Product } from "../components";
+import { ProductList } from "../components";
 
 const Products = () => {
 	return (
 		<>
-			<Navbar />
-			<Product />
-			<Footer />
+			<ProductList />
 		</>
 	);
 };

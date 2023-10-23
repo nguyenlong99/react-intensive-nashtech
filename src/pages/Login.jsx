@@ -1,5 +1,4 @@
 import React from "react";
-import { Footer, Navbar } from "../components";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useForm } from "react-hook-form";
@@ -48,7 +47,6 @@ const Login = () => {
 	};
 	return (
 		<>
-			<Navbar />
 			<div className="container my-3 py-3">
 				<h1 className="text-center">Login</h1>
 				<hr />
@@ -97,7 +95,6 @@ const Login = () => {
 					</div>
 				</div>
 			</div>
-			<Footer />
 		</>
 	);
 };

@@ -33,7 +33,7 @@ const Loading = () => {
 	);
 };
 
-const Products = () => {
+const ProductList = () => {
 	const [data, setData] = useState([]);
 	const [filter, setFilter] = useState(data);
 	const [loading, setLoading] = useState(false);
@@ -122,7 +122,7 @@ const Products = () => {
 									/>
 									<div className="card-body">
 										<h5 className="card-title">
-											<Link to={"/product/" + product.id}>
+											<Link to={"/products/" + product.id}>
 												{product.title.substring(0, 12)}...
 											</Link>
 										</h5>
@@ -135,7 +135,7 @@ const Products = () => {
 									</ul>
 									<div className="card-body">
 										<Link
-											to={"/product/" + product.id}
+											to={"/products/" + product.id}
 											className="btn btn-dark m-1"
 										>
 											Buy Now
@@ -170,4 +170,4 @@ const Products = () => {
 	);
 };
 
-export default Products;
+export default ProductList;
