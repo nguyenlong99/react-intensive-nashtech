@@ -35,8 +35,7 @@ const Loading = () => {
 };
 
 const ProductList = () => {
-	const [data, setData] = useState([]);
-	const [filter, setFilter] = useState(data);
+	const [productList, setProductList] = useState([]);
 	const [loading, setLoading] = useState(false);
 
 	const dispatch = useDispatch();
@@ -53,8 +52,7 @@ const ProductList = () => {
 			const products = await ProductService.getProducts();
 			if (!componentMounted) return;
 
-			setData(products);
-			setFilter(products);
+			setProductList(products);
 			setLoading(false);
 
 			return () => {
@@ -65,9 +63,11 @@ const ProductList = () => {
 		getProducts();
 	}, []);
 
-	const filterProduct = (cat) => {
-		const updatedList = data.filter((item) => item.category === cat);
-		setFilter(updatedList);
+	const filterProduct = (category) => {
+		(async () => {
+			const filteredList = await ProductService.getProductsByCategory(category);
+			setProductList(filteredList);
+		})();
 	};
 
 	const ShowProducts = () => {
@@ -76,7 +76,7 @@ const ProductList = () => {
 				<div className="buttons text-center py-5">
 					<button
 						className="btn btn-outline-dark btn-sm m-2"
-						onClick={() => setFilter(data)}
+						onClick={() => filterProduct("All")}
 					>
 						All
 					</button>
@@ -107,7 +107,7 @@ const ProductList = () => {
 				</div>
 
 				<div className="d-flex row">
-					{filter.map((product) => {
+					{productList.map((product) => {
 						return (
 							<div
 								id={product.id}
