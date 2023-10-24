@@ -8,13 +8,13 @@ import { authHelper } from "../utilities";
 import UserService from "../services/UserService";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../redux/action";
+import { Link } from "react-router-dom";
 
 const ManageProfile = () => {
 	const [user, setUser] = useState(authHelper.userLoggedIn());
 	const {
 		register,
 		handleSubmit,
-		watch,
 		formState: { errors },
 	} = useForm({
 		values: user,
@@ -27,8 +27,8 @@ const ManageProfile = () => {
 		if (!stateUser) navigate("/login");
 
 		(async () => {
-			const user = await UserService.getUserByEmail(stateUser?.email);
-			setUser(user);
+			const userByEmail = await UserService.getUserByEmail(stateUser?.email);
+			setUser(userByEmail);
 		})();
 	}, [stateUser]);
 
@@ -39,7 +39,7 @@ const ManageProfile = () => {
 					id: user.id,
 					firstName: data.firstName,
 					lastName: data.lastName,
-					password: data.newPassword,
+					password: user.password,
 					email: data.email,
 				});
 
@@ -104,74 +104,10 @@ const ManageProfile = () => {
 									{...register("email")}
 								/>
 							</Form.Group>
-							<Form.Group controlId="oldPassword" className="mb-3">
-								<Form.Label>Old Password</Form.Label>
-								<Form.Control
-									type="password"
-									placeholder="Enter Old Password"
-									{...register("oldPassword", {
-										required: "Old Password is required",
-										minLength: {
-											value: 8,
-											message: "Old Password must be 8 characters or more",
-										},
-										validate: (value) => {
-											if (value !== user?.password) {
-												return "Old Password is incorrect";
-											}
-										},
-									})}
-								/>
-								{errors.oldPassword && (
-									<Form.Text className="text-danger">
-										{errors.oldPassword.message}
-									</Form.Text>
-								)}
-							</Form.Group>
-							<Form.Group controlId="newPassword" className="mb-3">
-								<Form.Label>Password</Form.Label>
-								<Form.Control
-									type="password"
-									placeholder="Enter New Password"
-									{...register("newPassword", {
-										required: "New Password is required",
-										minLength: {
-											value: 8,
-											message: "New Password must be 8 characters or more",
-										},
-									})}
-								/>
-								{errors.newPassword && (
-									<Form.Text className="text-danger">
-										{errors.newPassword.message}
-									</Form.Text>
-								)}
-							</Form.Group>
-							<Form.Group controlId="confirmPassword" className="mb-3">
-								<Form.Label>Confirm password</Form.Label>
-								<Form.Control
-									type="password"
-									placeholder="Enter Confirm Password"
-									{...register("confirmPassword", {
-										required: "Confirm Password is required",
-										minLength: {
-											value: 8,
-											message: "Confirm Password must be 8 characters or more",
-										},
-										validate: (value) => {
-											if (watch("newPassword") !== value) {
-												return "Confirm Password does not match New Password";
-											}
-										},
-									})}
-								/>
-								{errors.confirmPassword && (
-									<Form.Text className="text-danger">
-										{errors.confirmPassword.message}
-									</Form.Text>
-								)}
-							</Form.Group>
 
+							<div className="d-block">
+								<Link to="/change-password">Change password</Link>
+							</div>
 							<Button variant="primary" type="submit" className="mt-2">
 								Submit
 							</Button>

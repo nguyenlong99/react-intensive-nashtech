@@ -16,6 +16,7 @@ import {
 	ManageProfile,
 	Root,
 } from "./";
+import ChangePassword from "./ChangePassword";
 
 const router = createBrowserRouter([
 	{
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
 			{
 				path: "manage-profile",
 				element: <ManageProfile />,
+			},
+			{
+				path: "change-password",
+				element: <ChangePassword />,
 			},
 		],
 	},
