@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import authHelper from "../utilities/authHelper";
+import { logoutUser } from "../redux/action";
 
 const Navbar = () => {
 	const state = useSelector((state) => state.handleCart);
+	const stateUser = useSelector((state) => state.handleUser);
+	const dispatch = useDispatch();
+
 	const navigate = useNavigate();
-	const [loggedInUser, setLoggedInUser] = useState(authHelper.userLoggedIn());
 	const handleLogout = () => {
-		localStorage.removeItem("logged_in_user");
-		setLoggedInUser(null);
+		dispatch(logoutUser(stateUser));
 	};
 	const handleManageProfile = () => {
 		navigate("/manage-profile");
@@ -60,10 +61,10 @@ const Navbar = () => {
 						</li>
 					</ul>
 					<div className="buttons text-center d-flex justify-content-center align-items-center">
-						{loggedInUser ? (
+						{stateUser ? (
 							<DropdownButton
 								id="dropdown-basic-button"
-								title={`Hello, ${loggedInUser.firstName} ${loggedInUser.lastName}`}
+								title={`Hello, ${stateUser.firstName} ${stateUser.lastName}`}
 							>
 								<Dropdown.Item onClick={handleManageProfile}>
 									Manage profile

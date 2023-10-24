@@ -8,7 +8,7 @@ const apiHelper = {
 			},
 			body: JSON.stringify(data),
 		});
-		return response.json();
+		return await response.json();
 	},
 	get: async (url = "") => {
 		const response = await fetch(url, {
@@ -18,7 +18,7 @@ const apiHelper = {
 				"Content-Type": "application/json",
 			},
 		});
-		return response.json();
+		return await response.json();
 	},
 	put: async (url = "", data = {}) => {
 		const response = await fetch(url, {
@@ -29,7 +29,7 @@ const apiHelper = {
 			},
 			body: JSON.stringify(data),
 		});
-		return response.json();
+		return await response.json();
 	},
 };
 export default apiHelper;

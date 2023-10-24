@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { authHelper } from "../utilities";
 import UserService from "../services/UserService";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../redux/action";
 
 const ManageProfile = () => {
 	const [user, setUser] = useState(authHelper.userLoggedIn());
@@ -18,48 +20,35 @@ const ManageProfile = () => {
 		values: user,
 	});
 	const navigate = useNavigate();
-
-	const checkValidUserLoggedIn = async () => {
-		const loggedInUser = authHelper.userLoggedIn();
-		const userByEmail = await UserService.getUserByEmail(loggedInUser?.email);
-		console.log({ loggedInUser, userByEmail });
-
-		if (!userByEmail || Object.keys(userByEmail).length === 0) {
-			navigate("/login");
-
-			return toast("User is not existed, please login again!", {
-				type: "error",
-			});
-		}
-		return userByEmail;
-	};
+	const dispatch = useDispatch();
+	const stateUser = useSelector((state) => state.handleUser);
 
 	useEffect(() => {
+		if (!stateUser) navigate("/login");
+
 		(async () => {
-			const user = await checkValidUserLoggedIn();
+			const user = await UserService.getUserByEmail(stateUser?.email);
 			setUser(user);
 		})();
-	}, []);
+	}, [stateUser]);
 
 	const onSubmit = (data) => {
 		(async () => {
 			try {
-				const validUser = await checkValidUserLoggedIn();
 				const updatedUser = await UserService.updateUserInfo({
-					id: validUser.id,
+					id: user.id,
 					firstName: data.firstName,
 					lastName: data.lastName,
 					password: data.newPassword,
 					email: data.email,
 				});
 
-				const userString = JSON.stringify({
+				const newInfoUser = {
 					firstName: updatedUser.firstName,
 					lastName: updatedUser.lastName,
 					email: updatedUser.email,
-				});
-				console.log({ userString, updatedUser });
-				localStorage.setItem("logged_in_user", userString);
+				};
+				dispatch(loginUser(newInfoUser));
 
 				toast.dismiss();
 				toast("Update user information successfully", { type: "success" });
@@ -69,6 +58,7 @@ const ManageProfile = () => {
 			}
 		})();
 	};
+
 	return (
 		<>
 			<div className="container my-3 py-3">
@@ -126,7 +116,6 @@ const ManageProfile = () => {
 											message: "Old Password must be 8 characters or more",
 										},
 										validate: (value) => {
-											console.log({ value, user });
 											if (value !== user?.password) {
 												return "Old Password is incorrect";
 											}

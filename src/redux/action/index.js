@@ -13,3 +13,16 @@ export const delCart = (product) => {
 		payload: product,
 	};
 };
+
+export const loginUser = (user) => {
+	return {
+		type: "LOGIN",
+		payload: user,
+	};
+};
+export const logoutUser = (user) => {
+	return {
+		type: "LOGOUT",
+		payload: user,
+	};
+};

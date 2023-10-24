@@ -8,7 +8,7 @@ const UserService = {
 		return users;
 	},
 	getUserByEmail: async (email) => {
-		const users = UserService.getUsers();
+		const users = await UserService.getUsers();
 		const userByEmail = users.find((item) => item.email === email);
 		return userByEmail;
 	},

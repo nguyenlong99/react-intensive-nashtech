@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { UserService } from "../services";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../redux/action";
 
 const Login = () => {
 	const {
@@ -13,6 +15,8 @@ const Login = () => {
 		formState: { errors },
 	} = useForm();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
 	const onSubmit = (data) => {
 		(async () => {
 			try {
@@ -31,10 +35,9 @@ const Login = () => {
 					email: existedUser.email,
 				};
 
-				localStorage.setItem("logged_in_user", JSON.stringify(loggedInUser));
+				dispatch(loginUser(loggedInUser));
 
 				toast.dismiss();
-				toast("Login successfully", { type: "success" });
 				navigate("/");
 			} catch (e) {
 				console.error(e);
