@@ -14,6 +14,14 @@ const ProductService = {
 		const filteredList = products.filter((item) => item.category === category);
 		return filteredList;
 	},
+	getProductById: async (id) => {
+		const product = await apiHelper.get(
+			`${process.env.REACT_APP_SERVER_HOST}/products/${id}`
+		);
+		console.log({ product });
+
+		return product;
+	},
 };
 
 export default ProductService;
