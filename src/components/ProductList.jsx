@@ -4,6 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { addCart } from "../redux/action";
+import ProductService from "../services/ProductService";
 
 const Loading = () => {
 	return (
@@ -49,11 +50,11 @@ const ProductList = () => {
 
 		const getProducts = async () => {
 			setLoading(true);
-			const response = await fetch("https://fakestoreapi.com/products/");
+			const products = await ProductService.getProducts();
 			if (!componentMounted) return;
 
-			setData(await response.clone().json());
-			setFilter(await response.json());
+			setData(products);
+			setFilter(products);
 			setLoading(false);
 
 			return () => {
