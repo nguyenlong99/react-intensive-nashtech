@@ -106,8 +106,8 @@
       "id": 15
     },
     {
-      "firstName": "asasdz",
-      "lastName": "asz`122",
+      "firstName": "Nice",
+      "lastName": "Hello",
       "password": "asdasdasd",
       "email": "sa12@gmail.com",
       "id": 16
@@ -358,7 +358,12 @@
   "carts": [
     {
       "userId": 16,
-      "products": [],
+      "products": [
+        {
+          "productId": 2,
+          "quantity": 3
+        }
+      ],
       "id": 1
     },
     {
