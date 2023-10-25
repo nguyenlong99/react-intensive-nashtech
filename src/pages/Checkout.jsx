@@ -1,11 +1,17 @@
 import React from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";
 import CartService from "../services/CartService";
 import ProductService from "../services/ProductService";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { toast } from "react-toastify";
+import OrderService from "../services/OrderService";
+import { initCart } from "../redux/action";
 
 const EmptyCart = () => {
 	return (
@@ -25,7 +31,13 @@ const EmptyCart = () => {
 const ShowCheckout = (props) => {
 	const { state } = props;
 	const stateUser = useSelector((state) => state.handleUser);
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({ values: stateUser });
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [productsInCart, setProductsInCart] = useState([]);
 
 	let subtotal = 0;
@@ -38,6 +50,22 @@ const ShowCheckout = (props) => {
 	productsInCart.map((item) => {
 		return (totalItems += item.qty);
 	});
+	const onSubmit = (data) => {
+		(async () => {
+			try {
+				await OrderService.createOrder(stateUser.email, data);
+				navigate("/");
+				dispatch(initCart([]));
+				toast.success("Checkout successfully");
+			} catch (e) {
+				console.error(e);
+				toast("Something went wrong", { type: "error" });
+			}
+		})();
+	};
+	const onError = (error) => {
+		console.log("ERROR:::", error);
+	};
 
 	useEffect(() => {
 		if (!stateUser) return navigate("/login");
@@ -92,82 +120,95 @@ const ShowCheckout = (props) => {
 								<h4 className="mb-0">Billing address</h4>
 							</div>
 							<div className="card-body">
-								<form className="needs-validation" novalidate>
+								<Form
+									className="needs-validation"
+									onSubmit={handleSubmit(onSubmit, onError)}
+								>
 									<div className="row g-3">
 										<div className="col-sm-6 my-1">
-											<label for="firstName" className="form-label">
-												First name
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="firstName"
-												placeholder=""
-												required
-											/>
-											<div className="invalid-feedback">
-												Valid first name is required.
-											</div>
+											<Form.Group controlId="firstName">
+												<Form.Label>First Name</Form.Label>
+												<Form.Control
+													placeholder="Enter first name"
+													{...register("firstName", {
+														required: "First name is required",
+													})}
+												/>
+												{errors.firstName && (
+													<Form.Text className="text-danger">
+														{errors.firstName.message}
+													</Form.Text>
+												)}
+											</Form.Group>
 										</div>
 
 										<div className="col-sm-6 my-1">
-											<label for="lastName" className="form-label">
-												Last name
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="lastName"
-												placeholder=""
-												required
-											/>
-											<div className="invalid-feedback">
-												Valid last name is required.
-											</div>
+											<Form.Group controlId="lastName">
+												<Form.Label>First Name</Form.Label>
+												<Form.Control
+													placeholder="Enter last name"
+													{...register("lastName", {
+														required: "First name is required",
+													})}
+												/>
+												{errors.lastName && (
+													<Form.Text className="text-danger">
+														{errors.lastName.message}
+													</Form.Text>
+												)}
+											</Form.Group>
 										</div>
 
 										<div className="col-12 my-1">
-											<label for="email" className="form-label">
-												Email
-											</label>
-											<input
-												type="email"
-												className="form-control"
-												id="email"
-												placeholder="you@example.com"
-												required
-											/>
-											<div className="invalid-feedback">
-												Please enter a valid email address for shipping updates.
-											</div>
+											<Form.Group controlId="email">
+												<Form.Label>Email</Form.Label>
+												<Form.Control
+													type="email"
+													placeholder="ex: you@example.com"
+													{...register("email", {
+														required: "Email is required",
+													})}
+												/>
+												{errors.email && (
+													<Form.Text className="text-danger">
+														{errors.email.message}
+													</Form.Text>
+												)}
+											</Form.Group>
 										</div>
 
 										<div className="col-12 my-1">
-											<label for="address" className="form-label">
-												Address
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="address"
-												placeholder="1234 Main St"
-												required
-											/>
-											<div className="invalid-feedback">
-												Please enter your shipping address.
-											</div>
+											<Form.Group controlId="mobilePhone">
+												<Form.Label>Mobile phone</Form.Label>
+												<Form.Control
+													placeholder="Enter mobile phone"
+													{...register("mobilePhone", {
+														required: "Mobile phone is required",
+													})}
+												/>
+												{errors.mobilePhone && (
+													<Form.Text className="text-danger">
+														{errors.mobilePhone.message}
+													</Form.Text>
+												)}
+											</Form.Group>
 										</div>
 
-										<div className="col-12">
-											<label for="address2" className="form-label">
-												Address 2 <span className="text-muted">(Optional)</span>
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="address2"
-												placeholder="Apartment or suite"
-											/>
+										<div className="col-12 my-1">
+											<Form.Group controlId="address">
+												<Form.Label>Address</Form.Label>
+												<Form.Control
+													placeholder="Enter address"
+													{...register("address", {
+														required: "Address is required",
+													})}
+												/>
+												{errors.address && (
+													<Form.Text className="text-danger">
+														{errors.address.message}
+													</Form.Text>
+												)}
+											</Form.Group>
 										</div>
 									</div>
 
@@ -177,83 +218,80 @@ const ShowCheckout = (props) => {
 
 									<div className="row gy-3">
 										<div className="col-md-6">
-											<label for="cc-name" className="form-label">
-												Name on card
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="cc-name"
-												placeholder=""
-												required
-											/>
-											<small className="text-muted">
-												Full name as displayed on card
-											</small>
-											<div className="invalid-feedback">
-												Name on card is required
-											</div>
+											<Form.Group controlId="nameOnCard">
+												<Form.Label>Name on card</Form.Label>
+												<Form.Control
+													placeholder="Enter name on card"
+													{...register("nameOnCard", {
+														required: "Name on card is required",
+													})}
+												/>
+												{errors.nameOnCard && (
+													<Form.Text className="text-danger">
+														{errors.nameOnCard.message}
+													</Form.Text>
+												)}
+											</Form.Group>
 										</div>
 
 										<div className="col-md-6">
-											<label for="cc-number" className="form-label">
-												Credit card number
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="cc-number"
-												placeholder=""
-												required
-											/>
-											<div className="invalid-feedback">
-												Credit card number is required
-											</div>
+											<Form.Group controlId="creditCardNumber">
+												<Form.Label>Credit card number</Form.Label>
+												<Form.Control
+													placeholder="Enter Credit card number"
+													{...register("creditCardNumber", {
+														required: "Credit card number is required",
+													})}
+												/>
+												{errors.creditCardNumber && (
+													<Form.Text className="text-danger">
+														{errors.creditCardNumber.message}
+													</Form.Text>
+												)}
+											</Form.Group>
 										</div>
 
 										<div className="col-md-3">
-											<label for="cc-expiration" className="form-label">
-												Expiration
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="cc-expiration"
-												placeholder=""
-												required
-											/>
-											<div className="invalid-feedback">
-												Expiration date required
-											</div>
+											<Form.Group controlId="expiration">
+												<Form.Label>Expiration</Form.Label>
+												<Form.Control
+													placeholder="Enter Expiration"
+													{...register("expiration", {
+														required: "Expiration is required",
+													})}
+												/>
+												{errors.expiration && (
+													<Form.Text className="text-danger">
+														{errors.expiration.message}
+													</Form.Text>
+												)}
+											</Form.Group>
 										</div>
 
 										<div className="col-md-3">
-											<label for="cc-cvv" className="form-label">
-												CVV
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="cc-cvv"
-												placeholder=""
-												required
-											/>
-											<div className="invalid-feedback">
-												Security code required
-											</div>
+											<Form.Group controlId="cvvNumber">
+												<Form.Label>CVV</Form.Label>
+												<Form.Control
+													placeholder="Enter CVV"
+													{...register("cvvNumber", {
+														required: "CVV is required",
+													})}
+												/>
+												{errors.cvvNumber && (
+													<Form.Text className="text-danger">
+														{errors.cvvNumber.message}
+													</Form.Text>
+												)}
+											</Form.Group>
 										</div>
 									</div>
 
 									<hr className="my-4" />
 
-									<button
-										className="w-100 btn btn-primary "
-										type="submit"
-										disabled
-									>
-										Continue to checkout
-									</button>
-								</form>
+									<Button variant="primary" type="submit" className="w-100 ">
+										Submit
+									</Button>
+								</Form>
 							</div>
 						</div>
 					</div>

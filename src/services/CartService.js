@@ -102,6 +102,16 @@ const CartService = {
 			product.quantity
 		);
 	},
+	removeAllProducts: async (userId) => {
+		const cart = await CartService.getCartPerUser(userId);
+
+		await apiHelper.patch(
+			`${process.env.REACT_APP_SERVER_HOST}/carts/${cart.id}`,
+			{
+				products: [],
+			}
+		);
+	},
 };
 
 export default CartService;
