@@ -16,3 +16,22 @@ An assignment at NashTech for React Intensive course
 * [Redux](https://redux.js.org/)
 * [Bootstrap](https://getbootstrap.com/)
 * [json-server](https://github.com/typicode/json-server): fake a server to call API using json file.
+
+## Instructions:
+
+1. Clone repository:
+```
+git clone https://github.com/nguyenlong99/react-intensive-nashtech.git
+```
+2. Navigate to folder:
+```
+cd ./react-intensive-nashtech
+```
+3. Install dependencies:
+```
+npm i 
+```
+4. Run both client and server:
+```
+npm start
+```
