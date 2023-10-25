@@ -3,7 +3,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import { logoutUser } from "../redux/action";
+import { initCart, logoutUser } from "../redux/action";
+import { useEffect } from "react";
+import UserService from "../services/UserService";
+import CartService from "../services/CartService";
 
 const Navbar = () => {
 	const state = useSelector((state) => state.handleCart);
@@ -13,10 +16,20 @@ const Navbar = () => {
 	const navigate = useNavigate();
 	const handleLogout = () => {
 		dispatch(logoutUser(stateUser));
+		dispatch(initCart([]));
 	};
 	const handleManageProfile = () => {
 		navigate("/manage-profile");
 	};
+	useEffect(() => {
+		(async () => {
+			if (!stateUser) return;
+			const userByEmail = await UserService.getUserByEmail(stateUser.email);
+			const cartPerUser = await CartService.getCartPerUser(userByEmail.id);
+
+			dispatch(initCart(cartPerUser?.products ?? []));
+		})();
+	}, []);
 
 	return (
 		<nav className="navbar navbar-expand-lg navbar-light bg-light py-3 sticky-top">

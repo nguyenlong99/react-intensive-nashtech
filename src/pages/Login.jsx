@@ -6,7 +6,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { UserService } from "../services";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../redux/action";
+import { initCart, loginUser } from "../redux/action";
+import CartService from "../services/CartService";
 
 const Login = () => {
 	const {
@@ -36,6 +37,9 @@ const Login = () => {
 				};
 
 				dispatch(loginUser(loggedInUser));
+				const cartPerUser = await CartService.getCartPerUser(existedUser.id);
+
+				dispatch(initCart(cartPerUser?.products ?? []));
 
 				toast.dismiss();
 				navigate("/");

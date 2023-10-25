@@ -13,6 +13,12 @@ export const delCart = (product) => {
 		payload: product,
 	};
 };
+export const initCart = (products) => {
+	return {
+		type: "INIT",
+		payload: products,
+	};
+};
 
 export const loginUser = (user) => {
 	return {
