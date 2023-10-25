@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Marquee from "react-fast-marquee";
-import { useDispatch } from "react-redux";
-import { addCart } from "../redux/action";
+import { useDispatch, useSelector } from "react-redux";
+import { initCart } from "../redux/action";
 import ProductService from "../services/ProductService";
+import UserService from "../services/UserService";
+import CartService from "../services/CartService";
+import { toast } from "react-toastify";
 
 const Product = () => {
 	const { id } = useParams();
@@ -12,11 +15,26 @@ const Product = () => {
 	const [similarProducts, setSimilarProducts] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [loading2, setLoading2] = useState(false);
-
+	const stateUser = useSelector((state) => state.handleUser);
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const addProduct = (product) => {
-		dispatch(addCart(product));
+		if (!stateUser) {
+			navigate("/login");
+			toast.info("Please login to add item to cart!");
+		}
+
+		(async () => {
+			const userByEmail = await UserService.getUserByEmail(stateUser?.email);
+
+			const productsInCart = await CartService.addProduct(
+				userByEmail.id,
+				product.id,
+				1
+			);
+			dispatch(initCart(productsInCart.products));
+		})();
 	};
 
 	useEffect(() => {

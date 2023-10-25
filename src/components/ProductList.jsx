@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { addCart, initCart } from "../redux/action";
+import { initCart } from "../redux/action";
 import ProductService from "../services/ProductService";
 import { toast } from "react-toastify";
 import CartService from "../services/CartService";

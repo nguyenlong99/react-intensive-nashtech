@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addCart, delCart, initCart } from "../redux/action";
+import { initCart } from "../redux/action";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";

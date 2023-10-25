@@ -71,7 +71,7 @@ const CartService = {
 	},
 	patchProductDecreaseQuantity: async (cartId, products, productId) => {
 		const newProducts = [];
-		products.map((item) => {
+		products.forEach((item) => {
 			if (item.productId === productId) {
 				const newQty = item.quantity - 1;
 				if (newQty === 0) return;
