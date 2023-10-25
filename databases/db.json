@@ -360,16 +360,8 @@
       "userId": 16,
       "products": [
         {
-          "productId": 1,
-          "quantity": 12
-        },
-        {
-          "productId": 3,
-          "quantity": 9
-        },
-        {
-          "productId": 5,
-          "quantity": 13
+          "productId": 19,
+          "quantity": 1
         }
       ],
       "id": 1

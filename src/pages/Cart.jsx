@@ -30,6 +30,7 @@ const Cart = () => {
 	const [productsInCart, setProductsInCart] = useState([]);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const [userInfo, setUserInfo] = useState({});
 
 	const addItem = (product) => {
 		if (!stateUser) {
@@ -38,10 +39,8 @@ const Cart = () => {
 		}
 
 		(async () => {
-			const userByEmail = await UserService.getUserByEmail(stateUser?.email);
-
 			const productsInCart = await CartService.addProduct(
-				userByEmail.id,
+				userInfo.id,
 				product.id,
 				1
 			);
@@ -49,13 +48,26 @@ const Cart = () => {
 		})();
 	};
 	const removeItem = (product) => {
-		dispatch(delCart(product));
+		if (!stateUser) {
+			navigate("/login");
+			toast.info("Please login to add item to cart!");
+		}
+
+		(async () => {
+			const productsInCart = await CartService.removeProduct(
+				userInfo.id,
+				product.id,
+				1
+			);
+			dispatch(initCart(productsInCart.products));
+		})();
 	};
 	useEffect(() => {
 		if (!stateUser) return navigate("/login");
 
 		(async () => {
 			const userByEmail = await UserService.getUserByEmail(stateUser.email);
+			setUserInfo(userByEmail);
 			const cartPerUser = await CartService.getCartPerUser(userByEmail.id);
 			const productsInfo = await Promise.all(
 				cartPerUser.products.map(async (item) => {
