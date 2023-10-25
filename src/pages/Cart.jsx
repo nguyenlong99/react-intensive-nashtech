@@ -39,12 +39,12 @@ const Cart = () => {
 		}
 
 		(async () => {
-			const productsInCart = await CartService.addProduct(
+			const increaseQuantityProducts = await CartService.addProduct(
 				userInfo.id,
 				product.id,
 				1
 			);
-			dispatch(initCart(productsInCart.products));
+			dispatch(initCart(increaseQuantityProducts.products));
 		})();
 	};
 	const removeItem = (product) => {
@@ -54,12 +54,12 @@ const Cart = () => {
 		}
 
 		(async () => {
-			const productsInCart = await CartService.removeProduct(
+			const decreaseQuantityProducts = await CartService.removeProduct(
 				userInfo.id,
 				product.id,
 				1
 			);
-			dispatch(initCart(productsInCart.products));
+			dispatch(initCart(decreaseQuantityProducts.products));
 		})();
 	};
 	useEffect(() => {
@@ -89,7 +89,6 @@ const Cart = () => {
 		let subtotal = 0;
 		let shipping = 30.0;
 		let totalItems = 0;
-		console.log("haha", { productsInCart });
 		productsInCart.map((item) => {
 			return (subtotal += item.price * item.qty);
 		});

@@ -1,6 +1,11 @@
 import React from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import UserService from "../services/UserService";
+import CartService from "../services/CartService";
+import ProductService from "../services/ProductService";
+import { useState } from "react";
 
 const EmptyCart = () => {
 	return (
@@ -19,16 +24,38 @@ const EmptyCart = () => {
 
 const ShowCheckout = (props) => {
 	const { state } = props;
+	const stateUser = useSelector((state) => state.handleUser);
+	const navigate = useNavigate();
+	const [productsInCart, setProductsInCart] = useState([]);
+
 	let subtotal = 0;
 	let shipping = 30.0;
 	let totalItems = 0;
-	state.map((item) => {
+	productsInCart.map((item) => {
 		return (subtotal += item.price * item.qty);
 	});
 
-	state.map((item) => {
+	productsInCart.map((item) => {
 		return (totalItems += item.qty);
 	});
+
+	useEffect(() => {
+		if (!stateUser) return navigate("/login");
+
+		(async () => {
+			const userByEmail = await UserService.getUserByEmail(stateUser.email);
+			const cartPerUser = await CartService.getCartPerUser(userByEmail.id);
+			const productsInfoWithQuantity = await Promise.all(
+				cartPerUser.products.map(async (item) => {
+					return {
+						...(await ProductService.getProductById(item.productId)),
+						qty: item.quantity,
+					};
+				})
+			);
+			setProductsInCart(productsInfoWithQuantity);
+		})();
+	}, [state]);
 	return (
 		<>
 			<div className="container py-5">
@@ -141,48 +168,6 @@ const ShowCheckout = (props) => {
 												id="address2"
 												placeholder="Apartment or suite"
 											/>
-										</div>
-
-										<div className="col-md-5 my-1">
-											<label for="country" className="form-label">
-												Country
-											</label>
-											<br />
-											<select className="form-select" id="country" required>
-												<option value="">Choose...</option>
-												<option>India</option>
-											</select>
-											<div className="invalid-feedback">
-												Please select a valid country.
-											</div>
-										</div>
-
-										<div className="col-md-4 my-1">
-											<label for="state" className="form-label">
-												State
-											</label>
-											<br />
-											<select className="form-select" id="state" required>
-												<option value="">Choose...</option>
-												<option>Punjab</option>
-											</select>
-											<div className="invalid-feedback">
-												Please provide a valid state.
-											</div>
-										</div>
-
-										<div className="col-md-3 my-1">
-											<label for="zip" className="form-label">
-												Zip
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="zip"
-												placeholder=""
-												required
-											/>
-											<div className="invalid-feedback">Zip code required.</div>
 										</div>
 									</div>
 

@@ -362,6 +362,10 @@
         {
           "productId": 19,
           "quantity": 1
+        },
+        {
+          "productId": 2,
+          "quantity": 1
         }
       ],
       "id": 1
